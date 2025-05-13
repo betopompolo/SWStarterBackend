@@ -10,7 +10,7 @@ type SWAPIMovieProperties struct {
 	OpeningCrawl string `json:"opening_crawl"`
 }
 
-type SWAPICharacterSearchProperty struct {
+type SWAPICharacterProperties struct {
 	Name      string `json:"name"`
 	Gender    string `json:"gender"`
 	SkinColor string `json:"skin_color"`
@@ -18,6 +18,7 @@ type SWAPICharacterSearchProperty struct {
 	Height    string `json:"height"`
 	EyeColor  string `json:"eye_color"`
 	Mass      string `json:"mass"`
+	BirthYear string `json:"birth_year"`
 }
 type SWAPIMovieSearchResult struct {
 	UID        string               `json:"uid"`
@@ -40,8 +41,8 @@ func (res SWAPIMovieSearchResponse) ToSearchResults() []SearchResult {
 }
 
 type SWAPICharacterSearchResult struct {
-	UID        string                       `json:"uid"`
-	Properties SWAPICharacterSearchProperty `json:"properties"`
+	UID        string                   `json:"uid"`
+	Properties SWAPICharacterProperties `json:"properties"`
 }
 
 type SWAPICharacterSearchResponse struct {
@@ -73,6 +74,26 @@ func (md SWAPIMovieDetails) ToMovieDetails() MovieDetails {
 		ID:           md.Result.UID,
 		Name:         md.Result.Properties.Title,
 		OpeningCrawl: md.Result.Properties.OpeningCrawl,
+	}
+}
+
+type SWAPICharacterDetails struct {
+	Result struct {
+		UID        string                   `json:"uid"`
+		Properties SWAPICharacterProperties `json:"properties"`
+	}
+}
+
+func (c SWAPICharacterDetails) ToCharacterDetails() CharacterDetails {
+	return CharacterDetails{
+		ID:        c.Result.UID,
+		Name:      c.Result.Properties.Name,
+		Gender:    c.Result.Properties.Gender,
+		SkinColor: c.Result.Properties.SkinColor,
+		HairColor: c.Result.Properties.HairColor,
+		Height:    c.Result.Properties.Height,
+		Mass:      c.Result.Properties.Mass,
+		BirthYear: c.Result.Properties.BirthYear,
 	}
 }
 
