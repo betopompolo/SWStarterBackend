@@ -1,14 +1,19 @@
 package main
 
 import (
-	"fmt"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		fmt.Fprintf(writer, "Hi there, I love %s!", request.URL.Path[1:])
-	})
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	http.HandleFunc("/searchMovies", searchMovies)
+	http.HandleFunc("/searchCharacters", searchCharacters)
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
