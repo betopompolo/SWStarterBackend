@@ -12,10 +12,10 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	http.HandleFunc("/searchMovies", searchMovies)
-	http.HandleFunc("/searchCharacters", searchCharacters)
-	http.HandleFunc("/getMovieDetails", getMovieDetails)
-	http.HandleFunc("/getCharacterDetails", getCharacterDetails)
+	http.HandleFunc("/searchMovies", WithLogging(searchMovies))
+	http.HandleFunc("/searchCharacters", WithLogging(searchCharacters))
+	http.HandleFunc("/getMovieDetails", WithLogging(getMovieDetails))
+	http.HandleFunc("/getCharacterDetails", WithLogging(getCharacterDetails))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
