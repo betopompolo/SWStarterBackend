@@ -14,6 +14,7 @@ func main() {
 
 	http.HandleFunc("/searchMovies", searchMovies)
 	http.HandleFunc("/searchCharacters", searchCharacters)
+	http.HandleFunc("/getMovieDetails", getMovieDetails)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

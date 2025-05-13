@@ -1,6 +1,11 @@
 package main
 
-type SWAPIMovieSearchProperty struct {
+import (
+	"net/http"
+	"os"
+)
+
+type SWAPIMovieProperties struct {
 	Title        string `json:"title"`
 	OpeningCrawl string `json:"opening_crawl"`
 }
@@ -15,8 +20,8 @@ type SWAPICharacterSearchProperty struct {
 	Mass      string `json:"mass"`
 }
 type SWAPIMovieSearchResult struct {
-	UID        string                   `json:"uid"`
-	Properties SWAPIMovieSearchProperty `json:"properties"`
+	UID        string               `json:"uid"`
+	Properties SWAPIMovieProperties `json:"properties"`
 }
 type SWAPIMovieSearchResponse struct {
 	Results []SWAPIMovieSearchResult `json:"result"`
@@ -53,4 +58,24 @@ func (res SWAPICharacterSearchResponse) ToSearchResults() []SearchResult {
 		})
 	}
 	return results
+}
+
+type SWAPIMovieDetailsResult struct {
+	UID        string               `json:"uid"`
+	Properties SWAPIMovieProperties `json:"properties"`
+}
+type SWAPIMovieDetails struct {
+	Result SWAPIMovieDetailsResult `json:"result"`
+}
+
+func (md SWAPIMovieDetails) ToMovieDetails() MovieDetails {
+	return MovieDetails{
+		ID:           md.Result.UID,
+		Name:         md.Result.Properties.Title,
+		OpeningCrawl: md.Result.Properties.OpeningCrawl,
+	}
+}
+
+func SWAPIGet(path string) (res *http.Response, err error) {
+	return http.Get(os.Getenv("SW_BASE_URL") + path)
 }
