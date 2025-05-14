@@ -5,7 +5,9 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"os"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -19,6 +21,8 @@ func getFirst(n int, ns []NetworkStats) []NetworkStats {
 
 	return ns[:n]
 }
+
+const defaultRecalcTimeInMinutes = 5
 
 func main() {
 	err := godotenv.Load()
@@ -39,14 +43,12 @@ func main() {
 
 		err = json.NewEncoder(writer).Encode(getFirst(5, dbData))
 	}))
-	http.HandleFunc("/dummy", WithLogging(func(writer http.ResponseWriter, request *http.Request) {
 
-	}))
-	http.HandleFunc("/dummy2", WithLogging(func(writer http.ResponseWriter, request *http.Request) {
-
-	}))
-
-	ticker := time.NewTicker(5 * time.Minute)
+	recalcMins, err := strconv.Atoi(os.Getenv("RECALCULATE_NETWORK_STATS_MINUTES"))
+	if err != nil || recalcMins <= 0 {
+		recalcMins = defaultRecalcTimeInMinutes
+	}
+	ticker := time.NewTicker(time.Duration(recalcMins) * time.Minute)
 	defer ticker.Stop()
 	go func() {
 		for {
@@ -57,5 +59,14 @@ func main() {
 		}
 	}()
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	err = http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		log.Fatal()
+	} else {
+		log.Println("Server is running on port " + port)
+	}
 }

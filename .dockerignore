@@ -1,0 +1,8 @@
+.git
+.gitignore
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+docker-compose*.yml
