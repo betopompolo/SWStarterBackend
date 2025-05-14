@@ -6,19 +6,21 @@ import (
 )
 
 type SWAPIMovieProperties struct {
-	Title        string `json:"title"`
-	OpeningCrawl string `json:"opening_crawl"`
+	Title          string   `json:"title"`
+	OpeningCrawl   string   `json:"opening_crawl"`
+	CharactersURLs []string `json:"characters"`
 }
 
 type SWAPICharacterProperties struct {
-	Name      string `json:"name"`
-	Gender    string `json:"gender"`
-	SkinColor string `json:"skin_color"`
-	HairColor string `json:"hair_color"`
-	Height    string `json:"height"`
-	EyeColor  string `json:"eye_color"`
-	Mass      string `json:"mass"`
-	BirthYear string `json:"birth_year"`
+	Name       string   `json:"name"`
+	Gender     string   `json:"gender"`
+	SkinColor  string   `json:"skin_color"`
+	HairColor  string   `json:"hair_color"`
+	Height     string   `json:"height"`
+	EyeColor   string   `json:"eye_color"`
+	Mass       string   `json:"mass"`
+	BirthYear  string   `json:"birth_year"`
+	MoviesURLs []string `json:"movies"`
 }
 type SWAPIMovieSearchResult struct {
 	UID        string               `json:"uid"`
@@ -69,11 +71,18 @@ type SWAPIMovieDetails struct {
 	Result SWAPIMovieDetailsResult `json:"result"`
 }
 
-func (md SWAPIMovieDetails) ToMovieDetails() MovieDetails {
-	return MovieDetails{
+func (md SWAPIMovieDetails) ToMovieDetails() *MovieDetails {
+	return &MovieDetails{
 		ID:           md.Result.UID,
 		Name:         md.Result.Properties.Title,
 		OpeningCrawl: md.Result.Properties.OpeningCrawl,
+	}
+}
+
+func (md SWAPIMovieDetails) ToMovieShort() MovieShort {
+	return MovieShort{
+		ID:   md.Result.UID,
+		Name: md.Result.Properties.Title,
 	}
 }
 
@@ -94,6 +103,13 @@ func (c SWAPICharacterDetails) ToCharacterDetails() CharacterDetails {
 		Height:    c.Result.Properties.Height,
 		Mass:      c.Result.Properties.Mass,
 		BirthYear: c.Result.Properties.BirthYear,
+	}
+}
+
+func (c SWAPICharacterDetails) ToCharactersShort() CharacterShort {
+	return CharacterShort{
+		ID:   c.Result.UID,
+		Name: c.Result.Properties.Name,
 	}
 }
 
