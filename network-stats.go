@@ -16,6 +16,6 @@ func WithLogging(handler http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func computeNetworkStats(c chan string, db *InMemoryDB) {
+func computeNetworkStats(c chan string) {
 	db.Update(c)
 }

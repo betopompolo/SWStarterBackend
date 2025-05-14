@@ -10,6 +10,7 @@ import (
 )
 
 var urlQueue = make(chan string, 100)
+var db = NewInMemoryDB()
 
 func getFirst(n int, ns []NetworkStats) []NetworkStats {
 	if len(ns) < n {
@@ -24,8 +25,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-
-	db := NewInMemoryDB()
 
 	http.HandleFunc("/searchMovies", WithLogging(searchMovies))
 	http.HandleFunc("/searchCharacters", WithLogging(searchCharacters))
@@ -50,7 +49,7 @@ func main() {
 		for {
 			select {
 			case <-ticker.C:
-				computeNetworkStats(urlQueue, db)
+				computeNetworkStats(urlQueue)
 			}
 		}
 	}()
