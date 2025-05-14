@@ -100,6 +100,7 @@ func (c SWAPICharacterDetails) ToCharacterDetails() CharacterDetails {
 		Gender:    c.Result.Properties.Gender,
 		SkinColor: c.Result.Properties.SkinColor,
 		HairColor: c.Result.Properties.HairColor,
+		EyeColor:  c.Result.Properties.EyeColor,
 		Height:    c.Result.Properties.Height,
 		Mass:      c.Result.Properties.Mass,
 		BirthYear: c.Result.Properties.BirthYear,

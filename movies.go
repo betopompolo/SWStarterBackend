@@ -10,7 +10,7 @@ import (
 type MovieDetails struct {
 	ID              string           `json:"id"`
 	Name            string           `json:"name"`
-	OpeningCrawl    string           `json:"opening_crawl"`
+	OpeningCrawl    string           `json:"openingCrawl"`
 	CharactersShort []CharacterShort `json:"characters"`
 }
 
@@ -20,6 +20,10 @@ type MovieShort struct {
 }
 
 func (movie *MovieDetails) FetchCharactersShort(charsUrls []string) {
+	if len(charsUrls) == 0 {
+		movie.CharactersShort = []CharacterShort{}
+		return
+	}
 	goRoutinesMaxCount := min(len(charsUrls), 50)
 	wg := sync.WaitGroup{}
 	wg.Add(goRoutinesMaxCount)

@@ -5,8 +5,8 @@ import (
 )
 
 type NetworkStats struct {
-	url        string
-	usageCount int
+	URL        string `json:"url"`
+	UsageCount int    `json:"usageCount"`
 }
 
 func WithLogging(handler http.HandlerFunc) http.HandlerFunc {

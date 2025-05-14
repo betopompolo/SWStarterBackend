@@ -13,6 +13,7 @@ type CharacterDetails struct {
 	Gender      string       `json:"gender"`
 	SkinColor   string       `json:"skinColor"`
 	HairColor   string       `json:"hairColor"`
+	EyeColor    string       `json:"eyeColor"`
 	Height      string       `json:"height"`
 	Mass        string       `json:"mass"`
 	BirthYear   string       `json:"birthYear"`

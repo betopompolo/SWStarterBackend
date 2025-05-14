@@ -34,17 +34,20 @@ func main() {
 		dbData := db.ReadNetworkStats()
 
 		sort.Slice(dbData, func(i, j int) bool {
-			return dbData[i].usageCount > dbData[j].usageCount
+			return dbData[i].UsageCount > dbData[j].UsageCount
 		})
 
 		err = json.NewEncoder(writer).Encode(getFirst(5, dbData))
 	}))
+	http.HandleFunc("/dummy", WithLogging(func(writer http.ResponseWriter, request *http.Request) {
 
-	ticker := time.NewTicker(5 * time.Second)
-	defer func() {
-		ticker.Stop()
-		close(urlQueue)
-	}()
+	}))
+	http.HandleFunc("/dummy2", WithLogging(func(writer http.ResponseWriter, request *http.Request) {
+
+	}))
+
+	ticker := time.NewTicker(5 * time.Minute)
+	defer ticker.Stop()
 	go func() {
 		for {
 			select {
